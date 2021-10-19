@@ -1,0 +1,59 @@
+CREATE TABLE IF NOT EXISTS album (
+	id serial NOT NULL,
+	album_name varchar(50),
+	year_of_issue int,
+	CONSTRAINT album_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS collection (
+	id serial NOT NULL,
+	collection_name varchar(50),
+	year_of_issue int,
+	CONSTRAINT collection_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS genre (
+	id serial NOT NULL,
+	genre_name varchar(30),
+	CONSTRAINT genre_genre_name_key UNIQUE (genre_name),
+	CONSTRAINT genre_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS singer (
+	id serial NOT NULL,
+	"name" varchar(100),
+	CONSTRAINT singer_name_key UNIQUE (name),
+	CONSTRAINT singer_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS singer_album (
+	singer_id int,
+	album_id int,
+	CONSTRAINT album_key FOREIGN KEY (album_id) REFERENCES album(id),
+	CONSTRAINT singer_key FOREIGN KEY (singer_id) REFERENCES singer(id)
+);
+
+CREATE TABLE IF NOT EXISTS singer_genre (
+	genre_id int,
+	singer_id int,
+	CONSTRAINT genre_key FOREIGN KEY (genre_id) REFERENCES genre(id),
+	CONSTRAINT singer_key FOREIGN KEY (singer_id) REFERENCES singer(id)
+);
+
+CREATE TABLE IF NOT EXISTS track (
+	id serial NOT NULL,
+	track_name varchar(30),
+	duration numeric,
+	id_album int,
+	CONSTRAINT track_pkey PRIMARY KEY (id),
+	CONSTRAINT track_id_album_fkey FOREIGN KEY (id_album) REFERENCES album(id)
+);
+
+CREATE TABLE IF NOT EXISTS track_collection (
+	track_id int,
+	collection_id int,
+	CONSTRAINT collection_key FOREIGN KEY (collection_id) REFERENCES collection(id),
+	CONSTRAINT track_key FOREIGN KEY (track_id) REFERENCES track(id)
+);
+
+
